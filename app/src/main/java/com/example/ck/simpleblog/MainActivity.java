@@ -9,17 +9,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 //https://www.youtube.com/watch?v=Yx8lRrclCYo&index=20&list=PLGCjwl1RrtcTXrWuRTa59RyRmQ4OedWrt#t=14.086621
-//10:35
+//14:28
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mBlogList;
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Blog");
 
         mBlogList = (RecyclerView) findViewById(R.id.blog_list);
         mBlogList.setHasFixedSize(true);
@@ -31,6 +38,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, BlogViewHolder>(
+                Blog.class,
+                R.layout.blog_row,
+                BlogViewHolder.class,
+                mDatabase
+
+        ) {
+            @Override
+            protected void populateViewHolder(BlogViewHolder viewHolder, Blog model, int position) {
+                    viewHolder.setTitle(model.getTitle());
+                viewHolder.setDesc(model.getDesc());
+            }
+        };
+
+        mBlogList.setAdapter(firebaseRecyclerAdapter);
+
     }
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder{
@@ -38,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         public BlogViewHolder(View itemView) {
             super(itemView);
 
-            itemView = mView;
+            mView=itemView ;
         }
 
         public void setTitle(String title) {
