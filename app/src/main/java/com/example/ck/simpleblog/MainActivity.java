@@ -19,7 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 //https://www.youtube.com/watch?v=jmOEeJ4CFH4&index=24&list=PLGCjwl1RrtcTXrWuRTa59RyRmQ4OedWrt
-//14:28
+//18:43
+//Part 7
 
 public class MainActivity extends AppCompatActivity {
 
