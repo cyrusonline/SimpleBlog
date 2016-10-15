@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
 
-
+//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
