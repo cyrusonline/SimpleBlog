@@ -17,6 +17,7 @@ public class Blog {
         this.desc = desc;
         this.image = image;
     }
+    //
 
     public String getTitle() {
         return title;

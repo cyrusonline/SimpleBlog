@@ -18,9 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
-//https://www.youtube.com/watch?v=jmOEeJ4CFH4&index=24&list=PLGCjwl1RrtcTXrWuRTa59RyRmQ4OedWrt
-//18:43
-//Part 7
+//https://www.youtube.com/watch?v=mDe_BFXL2vg&index=26&list=PLGCjwl1RrtcTXrWuRTa59RyRmQ4OedWrts
+//start  Part 9
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null){
-                        Intent loginintent = new Intent(MainActivity.this, RegisterActivity.class);
+                        Intent loginintent = new Intent(MainActivity.this, LoginActivity.class);
                         loginintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(loginintent);
 
@@ -132,6 +131,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, PostActivity.class));
         }
 
+        if (item.getItemId()==R.id.action_logout){
+           logout();
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        mAuth.signOut();
     }
 }
