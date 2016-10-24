@@ -1,5 +1,6 @@
 package com.example.ck.simpleblog;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -12,14 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-//https://www.youtube.com/watch?v=mDe_BFXL2vg&index=26&list=PLGCjwl1RrtcTXrWuRTa59RyRmQ4OedWrts
-//start  Part 9
+//https://www.youtube.com/watch?v=TG55BDSzErw
+//start  Part 10
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     //Simple Blog App - Register / Sign Up - Part 7
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseUsers;
+
+
     private FirebaseAuth.AuthStateListener mAuthListener;
 
 
@@ -54,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Blog");
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabaseUsers.keepSynced(true);
+        mDatabase.keepSynced(true);
 
         mBlogList = (RecyclerView) findViewById(R.id.blog_list);
         mBlogList.setHasFixedSize(true);
@@ -65,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //start of Simple Blog App - Register / Sign Up - Part 7
-
+        checkUserExist();
         mAuth.addAuthStateListener(mAuthListener);
 
         //end of Simple Blog App - Register / Sign Up - Part 7
@@ -86,6 +97,31 @@ public class MainActivity extends AppCompatActivity {
         };
 
         mBlogList.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
+
+    private void checkUserExist() {
+
+        final String user_id = mAuth.getCurrentUser().getUid();
+        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.hasChild(user_id)){
+                    Intent mainIntent = new Intent(MainActivity.this, SetupActivity.class);
+                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mainIntent);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
